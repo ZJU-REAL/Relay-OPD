@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!--Include Bootstrap's JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"></script>
+    <!-- Custom JS for this template -->
+    <script src="js/copyText.js"></script>
+
+    <!--Include the icon fonts stylesheet-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!--Include Bootstrap's CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+          crossorigin="anonymous">
+    <!--Local Icon-->
+    <link rel="stylesheet" href="icons/style.css">
+    <!--Local Fonts-->
+    <link rel="stylesheet" href="fonts/avenir-next/stylesheet.css">
+    <link rel="stylesheet" href="fonts/segoe-print/stylesheet.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="style.css">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Website Title -->
+    <title>Pass the Baton: Trajectory-Relayed On-Policy Distillation</title>
+    <!-- The description that appears when you share the link -->
+    <meta property="og:description" content="Relay-OPD lets the teacher briefly take over at detected reasoning-failure points and hand the trajectory back, fixing prefix failure in on-policy distillation."/>
+    <!-- Used to display page descriptions in search results -->
+    <meta name="description" content="Relay-OPD, on-policy distillation, knowledge distillation, LLM reasoning, speculative decoding, handoff trigger">
+    <!-- favicon -->
+    <link rel="icon" href="assets/favicon.png" type="image/x-icon">
+    <style>
+        .author {
+            margin: 2rem 0;
+        }
+        .author-name {
+            display: inline-block;
+            margin: 0.3rem 1rem;
+            white-space: nowrap;
+        }
+        .author-name a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .author-name a:hover {
+            color: #007bff;
+        }
+        .author-name sup {
+            font-size: 0.8em;
+            margin-left: 2px;
+        }
+        .organization {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 1rem;
+        }
+        .footnote {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        .title-logo {
+            height: 3.1rem;
+            vertical-align: -0.55rem;
+            margin-right: 0.4rem;
+        }
+        .best-score {
+            font-weight: 700;
+        }
+        .second-score {
+            text-decoration: underline;
+        }
+        .delta-row td {
+            color: #198754;
+            font-size: 0.9em;
+        }
+        .compact-table {
+            font-size: 0.9em;
+        }
+        .compact-table td, .compact-table th {
+            white-space: nowrap;
+        }
+        .table-container {
+            margin-top: 2rem;
+        }
+        @media (max-width: 768px) {
+            .author-name {
+                display: block;
+                margin: 0.2rem 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header class="container">
+    <hr>
+    <!-- Paper Title -->
+    <div class="container text-center">
+        <img src="assets/logo.png" alt="Relay-OPD logo" class="title-logo">
+        <span class="title-font x-gradient-font">Pass the Baton:&nbsp;</span>
+        <a class="title-font text-body-emphasis"
+           href="https://github.com/zju-real/Relay-OPD">
+            Trajectory-Relayed On-Policy Distillation
+        </a>
+    </div>
+    <hr>
+    <!-- author list -->
+    <div class="container author text-center">
+        <div class="row">
+            <div class="col-12">
+                <div class="author-name">
+                    <a href="#"><strong>Haolei Xu</strong></a><sup>1,2*</sup>
+                </div>
+                <div class="author-name">
+                    <a href="https://github.com/tricktreat"><strong>Yongliang Shen</strong></a><sup>1&dagger;</sup>
+                </div>
+                <div class="author-name">
+                    <a href="#"><strong>Weiming Lu</strong></a><sup>1&dagger;</sup>
+                </div>
+            </div>
+        </div>
+        <!-- author organization -->
+        <div class="row mt-3">
+            <div class="col-12 organization">
+                <sup>1</sup>Zhejiang University &nbsp;&nbsp;
+                <sup>2</sup>Alibaba Group
+            </div>
+            <div class="col-12 footnote">
+                <sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>&dagger;</sup>Corresponding author
+            </div>
+        </div>
+    <!-- paper status -->
+    <div class="text-center" style="margin-top: 20px">
+        <h3>Preprint</h3>
+    </div>
+    <!-- links -->
+    <div class="text-center">
+        <div class="row justify-content-md-center">
+            <div id="links">
+                <div class="col col-lg-2">
+                    <a id="arxiv" href="#">Arxiv</a>
+                </div>
+                <div class="col col-lg-2">
+                    <a id="code" href="https://github.com/zju-real/Relay-OPD">Code</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- teaser -->
+    <div class="text-center">
+        <figure class="figure">
+            <img src="./assets/teaser.png" class="figure-img img-fluid rounded"
+                 alt="Relay-OPD teaser: a relay case, the difference between OPD and Relay-OPD, and overall performance">
+            <figcaption class="figure-caption text-start">
+                <strong>(a)</strong> A Relay-OPD case: at the detected handoff trigger, the teacher prefers the reflection token (<em>But</em>, 74.4%) while the student would continue along the current direction (<em>So</em>, 50.6%); a brief teacher leg corrects the reasoning and the student resumes to the correct answer.
+                <strong>(b)</strong> Difference between OPD and Relay-OPD.
+                <strong>(c)</strong> Overall performance.
+            </figcaption>
+        </figure>
+    </div>
+
+</header>
+<br>
+
+<main class="container">
+    <!-- Motivation -->
+    <div class="card border-0">
+        <div class="card-body x-gradient-block">
+            <h2 class="card-title text-center card-title-margin">Motivation</h2>
+            <p class="card-text">
+                On-policy distillation (OPD) grounds token-level supervision in the student's own trajectory, but it suffers from <strong>prefix failure</strong>: once the student commits to a wrong reasoning direction early on, all subsequent generation builds on this deviation, producing long misdirected continuations that elicit unreliable supervision and waste training compute. We identify a <strong>teacher&ndash;student continuation asymmetry</strong> on failed prefixes: the teacher tends to re-examine existing reasoning and redirect, while the student keeps pushing along the original direction. This asymmetric behavior is a natural, label-free online signal for locating potential prefix failure &mdash; we call the corresponding position the <strong>handoff trigger</strong>.
+            </p>
+            <p class="card-text">
+                Trajectory intervention experiments built on this signal yield two observations.
+                <strong>[1]&nbsp;Local correction suffices:</strong> even when the teacher only replaces the reflection token at trigger positions (L&nbsp;=&nbsp;0), teacher tokens amounting to merely 0.35% of all generated tokens raise accuracy from 27.73 to 34.96 (+7.23).
+                <strong>[2]&nbsp;Valuable supervision is front-loaded:</strong> skipping early triggers degrades accuracy sharply (41.99&nbsp;&rarr;&nbsp;33.98 / 29.49 with periodic delays r&nbsp;=&nbsp;1 / 3 at L&nbsp;=&nbsp;3), and the teacher&ndash;student gap shrinks monotonically as generation position advances. Prefix failure should therefore be addressed by <em>early, local</em> teacher intervention at detected failure points, before the wrong direction becomes entrenched.
+            </p>
+
+            <div class="row mt-4 align-items-center">
+                <div class="col-md-7">
+                    <figure class="figure">
+                        <img src="./assets/motivation_intervention.png" class="img-thumbnail figure-img img-fluid rounded"
+                             alt="Degree and timing of teacher intervention">
+                        <figcaption class="figure-caption">
+                            <strong>Degree and timing of teacher intervention.</strong> Accuracy and teacher token ratio as the number of teacher-generated paragraphs L varies; delaying valid triggers sharply hurts accuracy.
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="col-md-5">
+                    <figure class="figure">
+                        <img src="./assets/absolute_position_gap.png" class="img-thumbnail figure-img img-fluid rounded"
+                             alt="Teacher-student gap by response position">
+                        <figcaption class="figure-caption">
+                            <strong>Teacher&ndash;student gap by response position.</strong> The gap shrinks monotonically with position: later intervention is progressively less recoverable.
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Abstract -->
+    <div class="card border-0">
+        <div class="card-body x-gradient-block">
+            <h2 class="card-title text-center card-title-margin">Abstract</h2>
+            <p class="card-text">
+                On-policy distillation (OPD) grounds token-level supervision in the student's own trajectory, yet suffers from prefix failure: once the student commits to a wrong reasoning direction, all subsequent generation builds on this deviation, producing misdirected continuations that elicit unreliable supervision and waste compute. We identify a teacher&ndash;student continuation asymmetry on failed prefixes, where the teacher tends to redirect while the student continues along the original direction, and convert it into a label-free handoff trigger in <strong>Relay On-Policy Distillation (Relay-OPD)</strong>. During training, Relay-OPD constructs relay trajectories by letting the teacher briefly take over at detected trigger points to produce a teacher leg, after which the student resumes and is optimized on the resulting trajectory. A limited relay budget concentrates intervention on critical early positions while limiting departure from the student policy. With a Qwen3-4B teacher and Qwen3-0.6B/1.7B-Non-Thinking students on eight mathematical reasoning benchmarks, Relay-OPD achieves the best or second-best results on every benchmark, outperforming standard OPD by <strong>+5.73%</strong> and the strongest baseline FastOPD by <strong>+1.49%</strong> on average for 1.7B, with consistent gains at 0.6B. Training trajectory length is reduced by <strong>over 50%</strong>.
+            </p>
+        </div>
+    </div>
+    <br>
+
+    <!-- Methodology -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title card-title-margin">Methodology</h2>
+            <hr class="body-hr"/>
+            <p class="card-text">
+                Relay-OPD runs like a relay race. The student generates on-policy as usual; at every position, a <strong>handoff criterion</strong> checks whether the teacher's top-1 token is a reflection token that is absent from the student's top-K &mdash; the signature of a failed prefix the student would not fix on its own. When the trigger fires, the baton passes to the teacher: a short <strong>teacher leg</strong> of L paragraphs redirects the reasoning, after which the baton returns to the student. A relay budget of M teacher legs concentrates intervention on critical early positions, and the rollout terminates when the M-th teacher leg ends, keeping relay trajectories short. The student is then optimized on the relayed trajectory with token-level advantages, including on the relay tokens themselves, so it internalizes <em>when</em> and <em>how</em> to reflect.
+            </p>
+
+            <h4 class="mt-4">Key Components</h4>
+            <ul>
+                <li><strong>Label-free handoff trigger:</strong> the teacher&ndash;student continuation asymmetry (reflection token in teacher top-1, absent from student top-K) locates prefix failure online, during generation &mdash; no verifier or ground-truth label needed.</li>
+                <li><strong>Speculative handoff:</strong> teacher legs reuse the speculative-decoding acceptance rule &mdash; the student keeps drafting and the teacher verifies with one forward pass per leg, so teacher-leg tokens follow the teacher distribution exactly at draft-model speed.</li>
+                <li><strong>Relay budget (M, L):</strong> at most M teacher legs of L paragraphs each; the rollout ends when the M-th leg ends, front-loading supervision and cutting trajectory length.</li>
+                <li><strong>Relay-token objective:</strong> training on the executed relay tokens (rather than student drafts or teacher FKL) transfers the teacher's reflective behavior into the student policy.</li>
+            </ul>
+        </div>
+    </div>
+    <br>
+
+    <!-- Experimental Results -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title card-title-margin">Experimental Results</h2>
+            <hr class="body-hr"/>
+            <div class="table-container">
+                <h4>Main Results</h4>
+                <p class="text-muted">Mean accuracy on eight mathematical reasoning benchmarks with a Qwen3-4B-Instruct-2507 teacher. <strong>Bold</strong> and <u>underline</u> denote the best and second-best results for each student. Subscripts in the Avg column give the training step of the best checkpoint; Train Len is the average rollout response length up to the best checkpoint.</p>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover compact-table">
+                        <thead class="table-primary">
+                            <tr>
+                                <th><strong>Method</strong></th>
+                                <th><strong>AIME24</strong></th>
+                                <th><strong>AIME25</strong></th>
+                                <th><strong>AIME26</strong></th>
+                                <th><strong>MATH</strong></th>
+                                <th><strong>AMC23</strong></th>
+                                <th><strong>Olymp.</strong></th>
+                                <th><strong>HMMT Feb26</strong></th>
+                                <th><strong>HMMT Nov25</strong></th>
+                                <th><strong>Avg</strong></th>
+                                <th><strong>Train Len</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Teacher</td>
+                                <td>60.42</td><td>46.04</td><td>52.19</td><td>94.20</td><td>93.83</td><td>70.62</td><td>31.25</td><td>41.88</td><td>61.30</td><td>&mdash;</td>
+                            </tr>
+                            <tr class="table-secondary">
+                                <td colspan="11"><em>Student: Qwen3-0.6B-Non-Thinking</em></td>
+                            </tr>
+                            <tr>
+                                <td>Student</td>
+                                <td>1.77</td><td>2.40</td><td>0.73</td><td>44.10</td><td>24.45</td><td>16.36</td><td>0.76</td><td>3.85</td><td>11.80</td><td>&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td>SFT</td>
+                                <td>4.90</td><td>7.60</td><td>4.06</td><td>59.45</td><td>34.92</td><td>26.74</td><td>1.89</td><td>3.02</td><td>17.82<sub>@110</sub></td><td>4262</td>
+                            </tr>
+                            <tr>
+                                <td>KD</td>
+                                <td>4.17</td><td>7.19</td><td>4.79</td><td>57.75</td><td>35.23</td><td>27.15</td><td>2.94</td><td>2.71</td><td>17.74<sub>@110</sub></td><td>4262</td>
+                            </tr>
+                            <tr>
+                                <td>GRPO</td>
+                                <td>8.23</td><td>15.21</td><td>10.00</td><td>68.60</td><td>46.56</td><td>35.42</td><td>7.86</td><td>6.04</td><td>24.74<sub>@110</sub></td><td>3379</td>
+                            </tr>
+                            <tr>
+                                <td>OPD</td>
+                                <td>13.44</td><td>17.92</td><td>11.98</td><td>75.30</td><td>51.25</td><td>41.32</td><td>7.39</td><td>5.62</td><td>28.03<sub>@110</sub></td><td>6900</td>
+                            </tr>
+                            <tr>
+                                <td>TRD</td>
+                                <td>4.58</td><td>8.54</td><td>3.96</td><td>57.60</td><td>36.33</td><td>26.93</td><td>3.79</td><td>2.81</td><td>18.07<sub>@20</sub></td><td>3275</td>
+                            </tr>
+                            <tr>
+                                <td>FastOPD</td>
+                                <td class="second-score">15.83</td><td class="second-score">20.10</td><td class="second-score">13.54</td><td class="second-score">75.30</td><td class="second-score">53.67</td><td class="second-score">44.81</td><td class="best-score">11.55</td><td class="second-score">8.54</td><td class="second-score">30.42<sub>@100</sub></td><td>3302</td>
+                            </tr>
+                            <tr>
+                                <td>SKD</td>
+                                <td>8.44</td><td>16.98</td><td>9.79</td><td>66.65</td><td>43.67</td><td>35.76</td><td>8.14</td><td>5.62</td><td>24.38<sub>@20</sub></td><td>5800</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td class="best-score">Relay-OPD (Ours)</td>
+                                <td class="best-score">15.94</td><td class="best-score">20.94</td><td class="best-score">14.06</td><td class="best-score">76.80</td><td class="best-score">55.55</td><td class="best-score">45.03</td><td class="second-score">11.17</td><td class="best-score">8.85</td><td class="best-score">31.04<sub>@75</sub></td><td class="best-score">2490</td>
+                            </tr>
+                            <tr class="delta-row table-success">
+                                <td>&Delta; vs OPD</td>
+                                <td>+2.50</td><td>+3.02</td><td>+2.08</td><td>+1.50</td><td>+4.30</td><td>+3.71</td><td>+3.78</td><td>+3.23</td><td>+3.01</td><td>&minus;63.9%</td>
+                            </tr>
+                            <tr class="table-secondary">
+                                <td colspan="11"><em>Student: Qwen3-1.7B-Non-Thinking</em></td>
+                            </tr>
+                            <tr>
+                                <td>Student</td>
+                                <td>12.60</td><td>9.58</td><td>7.40</td><td>71.95</td><td>47.89</td><td>38.54</td><td>6.34</td><td>4.38</td><td>24.84</td><td>&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td>SFT</td>
+                                <td>23.33</td><td>19.48</td><td>16.15</td><td>81.40</td><td>59.45</td><td>46.62</td><td>12.59</td><td>6.56</td><td>33.20<sub>@110</sub></td><td>4262</td>
+                            </tr>
+                            <tr>
+                                <td>KD</td>
+                                <td>23.54</td><td>21.15</td><td>15.31</td><td>81.45</td><td>60.23</td><td>48.07</td><td>12.78</td><td>7.50</td><td>33.75<sub>@110</sub></td><td>4262</td>
+                            </tr>
+                            <tr>
+                                <td>GRPO</td>
+                                <td>24.58</td><td>22.08</td><td>15.62</td><td>80.35</td><td>60.16</td><td>48.74</td><td>14.49</td><td>9.38</td><td>34.42<sub>@105</sub></td><td>2558</td>
+                            </tr>
+                            <tr>
+                                <td>OPD</td>
+                                <td>35.83</td><td>25.52</td><td>23.33</td><td>85.70</td><td>70.08</td><td>55.27</td><td>20.08</td><td>14.06</td><td>41.23<sub>@55</sub></td><td>4658</td>
+                            </tr>
+                            <tr>
+                                <td>TRD</td>
+                                <td>19.27</td><td>19.69</td><td>12.71</td><td>77.70</td><td>55.47</td><td>44.18</td><td>11.93</td><td>4.58</td><td>30.69<sub>@40</sub></td><td>2785</td>
+                            </tr>
+                            <tr>
+                                <td>FastOPD</td>
+                                <td class="second-score">42.29</td><td>30.42</td><td>26.35</td><td class="second-score">87.95</td><td class="second-score">74.30</td><td class="second-score">58.16</td><td class="second-score">23.58</td><td class="best-score">20.73</td><td class="second-score">45.47<sub>@45</sub></td><td>2709</td>
+                            </tr>
+                            <tr>
+                                <td>SKD</td>
+                                <td>33.12</td><td class="second-score">30.73</td><td class="second-score">28.85</td><td>87.35</td><td>72.42</td><td>54.41</td><td>20.08</td><td>11.88</td><td>42.35<sub>@35</sub></td><td>4753</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td class="best-score">Relay-OPD (Ours)</td>
+                                <td class="best-score">42.71</td><td class="best-score">32.81</td><td class="best-score">30.52</td><td class="best-score">89.50</td><td class="best-score">76.88</td><td class="best-score">58.79</td><td class="best-score">24.72</td><td class="second-score">19.79</td><td class="best-score">46.96<sub>@35</sub></td><td class="best-score">2296</td>
+                            </tr>
+                            <tr class="delta-row table-success">
+                                <td>&Delta; vs OPD</td>
+                                <td>+6.88</td><td>+7.29</td><td>+7.19</td><td>+3.80</td><td>+6.80</td><td>+3.52</td><td>+4.64</td><td>+5.73</td><td>+5.73</td><td>&minus;50.7%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h4>Analysis</h4>
+                <div class="text-center mt-3">
+                    <figure class="figure">
+                        <img src="./assets/training_dynamics.png" class="img-thumbnail figure-img img-fluid rounded"
+                             alt="Training dynamics of Relay-OPD">
+                        <figcaption class="figure-caption">
+                            <strong>Training dynamics.</strong> As training proceeds, fewer rollouts exhaust the relay budget and the teacher token ratio decays to a few percent &mdash; the student internalizes the teacher's reflective behavior &mdash; while Relay-OPD sustains higher policy entropy than OPD and FastOPD.
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="text-center mt-3">
+                    <figure class="figure">
+                        <img src="./assets/sensitivity_analysis.png" class="img-thumbnail figure-img img-fluid rounded"
+                             alt="Hyperparameter sensitivity of Relay-OPD">
+                        <figcaption class="figure-caption">
+                            <strong>Hyperparameter sensitivity.</strong> Relay-OPD is robust across relay budgets (M, L) and handoff top-K choices.
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <figure class="figure">
+                            <img src="./assets/hmmt_passk.png" class="img-thumbnail figure-img img-fluid rounded"
+                                 alt="Pass@k on HMMT"
+                                 style="width: 100%; object-fit: contain;">
+                            <figcaption class="figure-caption">
+                                <strong>Pass@k.</strong> Gains persist at large k: Relay-OPD expands real capability rather than sharpening a narrow mode.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="col-md-6">
+                        <figure class="figure">
+                            <img src="./assets/inference_length.png" class="img-thumbnail figure-img img-fluid rounded"
+                                 alt="Inference response length across benchmarks"
+                                 style="width: 100%; object-fit: contain;">
+                            <figcaption class="figure-caption">
+                                <strong>Inference length.</strong> The distilled student also answers with shorter responses at inference time &mdash; 14&ndash;28% shorter than even FastOPD.
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Key Insights -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title card-title-margin">Key Insights</h2>
+            <hr class="body-hr"/>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>A Label-Free Online Failure Signal</h5>
+                    <p>The teacher&ndash;student continuation asymmetry on failed prefixes &mdash; teacher redirects, student pushes on &mdash; is converted into a handoff trigger that locates prefix failure during generation, with no verifier or label.</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Early, Local Correction Wins</h5>
+                    <p>Replacing as little as 0.35% of tokens at trigger points yields +7.23 accuracy; delaying triggers sharply hurts. Supervision value is front-loaded, so Relay-OPD intervenes early and briefly instead of truncating or rewriting after the fact.</p>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h5>Exact Teacher Legs at Draft Speed</h5>
+                    <p>Teacher legs reuse the speculative-decoding acceptance rule: the student drafts, the teacher verifies with one forward pass per leg, and executed tokens follow the teacher distribution exactly.</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Better and Cheaper</h5>
+                    <p>Best or second-best on all eight benchmarks for both students (+5.73% over OPD, +1.49% over FastOPD at 1.7B), while cutting average training trajectory length by 50.7% (1.7B) and 63.9% (0.6B).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Citation -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title card-title-margin">Citation</h2>
+            <p id="bibtex" class="card-text" style="border: #1a1c20 1px">
+                <code> @misc{xu2026relayopd,<br>
+                    &nbsp;&nbsp;title={Pass the Baton: Trajectory-Relayed On-Policy Distillation},<br>
+                    &nbsp;&nbsp;author={Haolei Xu and Yongliang Shen and Weiming Lu},<br>
+                    &nbsp;&nbsp;year={2026},<br>
+                    &nbsp;&nbsp;url={https://github.com/zju-real/Relay-OPD},<br>
+                    }
+                </code>
+            </p>
+
+            <!-- Bibtex (Button trigger modal)-->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    onclick="copyText()">
+                Copy BibTex
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Bibtex</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="bibtex modal-body">
+                            Copy Success!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Acknowledgements -->
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title card-title-margin">Acknowledgements</h4>
+            <p class="card-text">We acknowledge the webpage template from <a href="https://ximinng.github.io/">Ximing Xing</a>, as used by <a href="https://zju-real.github.io/GUI-G2/">GUI-G&sup2;</a>.</p>
+        </div>
+    </div>
+    <br>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- left layout -->
+            <div class="col-12 col-md-6 text-md-start text-center">
+                <p class="footer-title mb-0">Relay-OPD</p>
+            </div>
+            <!-- right layout -->
+            <div class="col-12 col-md-6 text-md-end text-center">
+                <p class="footer-text mb-0">
+                    This webpage template was originally made by
+                    <a href="https://github.com/ximinng/GithubPages-Template" class="link-primary text-decoration-none">Ximing Xing</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+function copyText() {
+    const text = document.getElementById("bibtex").innerText;
+    const new_input = document.createElement('input');
+    new_input.value = text
+    document.body.appendChild(new_input)
+    // select value of new_input
+    new_input.select();
+    // exec copy command
+    document.execCommand("copy");
+    document.body.removeChild(new_input);
+}
+</script>
+
+</body>
+</html>
