@@ -6,12 +6,12 @@
 [![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b)](#)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green)](#)
 
-**Haolei Xu<sup>1,2*</sup> · Xiaowen Xu<sup>2*</sup> · Haiwen Hong<sup>2*†</sup> · Zixuan Ni<sup>1</sup>**<br>
-**Hongxing Li<sup>1,2</sup> · Yiwen Qiu<sup>1</sup> · Weiming Lu<sup>1‡</sup> · Yongliang Shen<sup>1</sup>**
+<strong>Haolei Xu<sup>1,2&#42;</sup> · Xiaowen Xu<sup>2&#42;</sup> · Haiwen Hong<sup>2&#42;&dagger;</sup> · Zixuan Ni<sup>1</sup></strong><br>
+<strong>Hongxing Li<sup>1,2</sup> · Yiwen Qiu<sup>1</sup> · Weiming Lu<sup>1&Dagger;</sup> · Yongliang Shen<sup>1</sup></strong>
 
 <sup>1</sup>Zhejiang University &nbsp; <sup>2</sup>Yuvion Team, Alibaba Group
 
-<sup>*</sup>Equal contribution &nbsp; <sup>†</sup>Project leader &nbsp; <sup>‡</sup>Corresponding author
+<sup>&#42;</sup>Equal contribution &nbsp; <sup>&dagger;</sup>Project leader &nbsp; <sup>&Dagger;</sup>Corresponding author
 
 </div>
 
