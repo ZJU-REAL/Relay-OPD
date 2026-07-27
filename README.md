@@ -8,15 +8,17 @@
 [![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b)](#)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green)](#)
 
-**Haolei Xu<sup>1,2*</sup> · Yongliang Shen<sup>1†</sup> · Weiming Lu<sup>1†</sup>**
+**Haolei Xu<sup>1,2*</sup> · Xiaowen Xu<sup>2*</sup> · Haiwen Hong<sup>2*†</sup> · Zixuan Ni<sup>1</sup> · Hongxing Li<sup>1,2</sup> · Yiwen Qiu<sup>1</sup> · Weiming Lu<sup>1‡</sup> · Yongliang Shen<sup>1</sup>**
 
-<sup>1</sup>Zhejiang University &nbsp; <sup>2</sup>Alibaba Group
+<sup>1</sup>Zhejiang University &nbsp; <sup>2</sup>Yuvion Team, Alibaba Group
+
+<sup>*</sup>Equal contribution &nbsp; <sup>†</sup>Project leader &nbsp; <sup>‡</sup>Corresponding author
 
 </div>
 
 ---
 
-**Relay-OPD** fixes *prefix failure* in on-policy distillation. A label-free **handoff trigger** — the teacher prefers a reflection token that is absent from the student's top-K — locates failed prefixes online during student generation. The teacher then briefly takes over for a short **teacher leg** (executed speculatively: the student keeps drafting, the teacher verifies with one forward pass per leg), hands the trajectory back, and a limited **relay budget (M, L)** keeps intervention early and local. The student is optimized on the relayed trajectory, including the relay tokens themselves.
+**Relay-OPD** fixes *prefix failure* in on-policy distillation. A label-free **handoff trigger** — the teacher's top-1 token is a reflection token while no reflection token appears in the student's top-K — locates failed prefixes online during student generation. The teacher then briefly takes over for a short **teacher leg** of L paragraphs, hands the trajectory back, and a limited **relay budget (M, L)** keeps intervention early and local. The entire rollout runs in a single speculative decoding engine (student as draft model, teacher as target model), and the student is optimized on the relayed trajectory, including the relay tokens themselves.
 
 With a Qwen3-4B-Instruct-2507 teacher and Qwen3-0.6B/1.7B-Non-Thinking students on eight mathematical reasoning benchmarks, Relay-OPD achieves the best or second-best result on every benchmark — **+5.73%** over standard OPD and **+1.49%** over the strongest baseline FastOPD on average at 1.7B — while cutting average training trajectory length by **more than 50%**.
 
@@ -38,7 +40,7 @@ With a Qwen3-4B-Instruct-2507 teacher and Qwen3-0.6B/1.7B-Non-Thinking students 
 ```bibtex
 @misc{xu2026relayopd,
   title={Pass the Baton: Trajectory-Relayed On-Policy Distillation},
-  author={Haolei Xu and Yongliang Shen and Weiming Lu},
+  author={Haolei Xu and Xiaowen Xu and Haiwen Hong and Zixuan Ni and Hongxing Li and Yiwen Qiu and Weiming Lu and Yongliang Shen},
   year={2026},
   url={https://github.com/zju-real/Relay-OPD},
 }

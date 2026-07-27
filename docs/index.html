@@ -118,10 +118,25 @@
                     <a href="#"><strong>Haolei Xu</strong></a><sup>1,2*</sup>
                 </div>
                 <div class="author-name">
-                    <a href="https://github.com/tricktreat"><strong>Yongliang Shen</strong></a><sup>1&dagger;</sup>
+                    <a href="#"><strong>Xiaowen Xu</strong></a><sup>2*</sup>
                 </div>
                 <div class="author-name">
-                    <a href="#"><strong>Weiming Lu</strong></a><sup>1&dagger;</sup>
+                    <a href="#"><strong>Haiwen Hong</strong></a><sup>2*&dagger;</sup>
+                </div>
+                <div class="author-name">
+                    <a href="#"><strong>Zixuan Ni</strong></a><sup>1</sup>
+                </div>
+                <div class="author-name">
+                    <a href="#"><strong>Hongxing Li</strong></a><sup>1,2</sup>
+                </div>
+                <div class="author-name">
+                    <a href="#"><strong>Yiwen Qiu</strong></a><sup>1</sup>
+                </div>
+                <div class="author-name">
+                    <a href="#"><strong>Weiming Lu</strong></a><sup>1&Dagger;</sup>
+                </div>
+                <div class="author-name">
+                    <a href="https://github.com/tricktreat"><strong>Yongliang Shen</strong></a><sup>1</sup>
                 </div>
             </div>
         </div>
@@ -129,10 +144,10 @@
         <div class="row mt-3">
             <div class="col-12 organization">
                 <sup>1</sup>Zhejiang University &nbsp;&nbsp;
-                <sup>2</sup>Alibaba Group
+                <sup>2</sup>Yuvion Team, Alibaba Group
             </div>
             <div class="col-12 footnote">
-                <sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>&dagger;</sup>Corresponding author
+                <sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>&dagger;</sup>Project leader &nbsp;&nbsp; <sup>&Dagger;</sup>Corresponding author
             </div>
         </div>
     <!-- paper status -->
@@ -179,7 +194,7 @@
             </p>
             <p class="card-text">
                 Trajectory intervention experiments built on this signal yield two observations.
-                <strong>[1]&nbsp;Local correction suffices:</strong> even when the teacher only replaces the reflection token at trigger positions (L&nbsp;=&nbsp;0), teacher tokens amounting to merely 0.35% of all generated tokens raise accuracy from 27.73 to 34.96 (+7.23).
+                <strong>[1]&nbsp;Local correction suffices:</strong> even when the teacher only replaces the reflection token at trigger positions (L&nbsp;=&nbsp;0), teacher tokens amounting to merely 0.35% of all generated tokens raise accuracy from 27.73 to 34.96 (+7.23%).
                 <strong>[2]&nbsp;Valuable supervision is front-loaded:</strong> skipping early triggers degrades accuracy sharply (41.99&nbsp;&rarr;&nbsp;33.98 / 29.49 with periodic delays r&nbsp;=&nbsp;1 / 3 at L&nbsp;=&nbsp;3), and the teacher&ndash;student gap shrinks monotonically as generation position advances. Prefix failure should therefore be addressed by <em>early, local</em> teacher intervention at detected failure points, before the wrong direction becomes entrenched.
             </p>
 
@@ -222,13 +237,13 @@
             <h2 class="card-title card-title-margin">Methodology</h2>
             <hr class="body-hr"/>
             <p class="card-text">
-                Relay-OPD runs like a relay race. The student generates on-policy as usual; at every position, a <strong>handoff criterion</strong> checks whether the teacher's top-1 token is a reflection token that is absent from the student's top-K &mdash; the signature of a failed prefix the student would not fix on its own. When the trigger fires, the baton passes to the teacher: a short <strong>teacher leg</strong> of L paragraphs redirects the reasoning, after which the baton returns to the student. A relay budget of M teacher legs concentrates intervention on critical early positions, and the rollout terminates when the M-th teacher leg ends, keeping relay trajectories short. The student is then optimized on the relayed trajectory with token-level advantages, including on the relay tokens themselves, so it internalizes <em>when</em> and <em>how</em> to reflect.
+                Relay-OPD runs like a relay race. The student generates on-policy as usual; at every position, a <strong>handoff criterion</strong> checks whether the teacher's top-1 token is a reflection token while no reflection token appears in the student's top-K &mdash; the signature of a failed prefix the student would not fix on its own. When the trigger fires, the baton passes to the teacher: a short <strong>teacher leg</strong> of L paragraphs redirects the reasoning, after which the baton returns to the student. A relay budget of M teacher legs concentrates intervention on critical early positions, and the rollout terminates when the M-th teacher leg ends, keeping relay trajectories short. The student is then optimized on the relayed trajectory with token-level advantages, including on the relay tokens themselves, so it internalizes <em>when</em> and <em>how</em> to reflect.
             </p>
 
             <h4 class="mt-4">Key Components</h4>
             <ul>
-                <li><strong>Label-free handoff trigger:</strong> the teacher&ndash;student continuation asymmetry (reflection token in teacher top-1, absent from student top-K) locates prefix failure online, during generation &mdash; no verifier or ground-truth label needed.</li>
-                <li><strong>Speculative handoff:</strong> teacher legs reuse the speculative-decoding acceptance rule &mdash; the student keeps drafting and the teacher verifies with one forward pass per leg, so teacher-leg tokens follow the teacher distribution exactly at draft-model speed.</li>
+                <li><strong>Label-free handoff trigger:</strong> the teacher&ndash;student continuation asymmetry (reflection token in teacher top-1, no reflection token in student top-K) locates prefix failure online, during generation &mdash; no verifier or ground-truth label needed.</li>
+                <li><strong>Unified speculative decoding engine:</strong> the whole relay runs in one speculative decoding pipeline with the student as draft model and the teacher as target model; rejection sampling makes teacher-leg tokens follow the teacher distribution exactly, and batch verification of student drafts reduces serial teacher decoding steps.</li>
                 <li><strong>Relay budget (M, L):</strong> at most M teacher legs of L paragraphs each; the rollout ends when the M-th leg ends, front-loading supervision and cutting trajectory length.</li>
                 <li><strong>Relay-token objective:</strong> training on the executed relay tokens (rather than student drafts or teacher FKL) transfers the teacher's reflective behavior into the student policy.</li>
             </ul>
@@ -418,14 +433,14 @@
                 </div>
                 <div class="col-md-6">
                     <h5>Early, Local Correction Wins</h5>
-                    <p>Replacing as little as 0.35% of tokens at trigger points yields +7.23 accuracy; delaying triggers sharply hurts. Supervision value is front-loaded, so Relay-OPD intervenes early and briefly instead of truncating or rewriting after the fact.</p>
+                    <p>Replacing as little as 0.35% of tokens at trigger points yields +7.23% accuracy; delaying triggers sharply hurts. Supervision value is front-loaded, so Relay-OPD intervenes early and briefly instead of truncating or rewriting after the fact.</p>
                 </div>
             </div>
 
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <h5>Exact Teacher Legs at Draft Speed</h5>
-                    <p>Teacher legs reuse the speculative-decoding acceptance rule: the student drafts, the teacher verifies with one forward pass per leg, and executed tokens follow the teacher distribution exactly.</p>
+                    <h5>Exact Teacher Legs in One Engine</h5>
+                    <p>The whole relay runs in a single speculative decoding pipeline: the student drafts, the teacher batch-verifies, and rejection sampling guarantees teacher-leg tokens follow the teacher distribution exactly.</p>
                 </div>
                 <div class="col-md-6">
                     <h5>Better and Cheaper</h5>
@@ -443,7 +458,7 @@
             <p id="bibtex" class="card-text" style="border: #1a1c20 1px">
                 <code> @misc{xu2026relayopd,<br>
                     &nbsp;&nbsp;title={Pass the Baton: Trajectory-Relayed On-Policy Distillation},<br>
-                    &nbsp;&nbsp;author={Haolei Xu and Yongliang Shen and Weiming Lu},<br>
+                    &nbsp;&nbsp;author={Haolei Xu and Xiaowen Xu and Haiwen Hong and Zixuan Ni and Hongxing Li and Yiwen Qiu and Weiming Lu and Yongliang Shen},<br>
                     &nbsp;&nbsp;year={2026},<br>
                     &nbsp;&nbsp;url={https://github.com/zju-real/Relay-OPD},<br>
                     }
