@@ -1,14 +1,13 @@
 <div align="center">
 
-<img src="docs/assets/logo.png" alt="Relay-OPD" height="90">
-
-# Pass the Baton: Trajectory-Relayed On-Policy Distillation
+# <img src="docs/assets/logo.png" alt="Relay-OPD" height="40"> Pass the Baton: Trajectory-Relayed On-Policy Distillation
 
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://zju-real.github.io/Relay-OPD/)
 [![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b)](#)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green)](#)
 
-**Haolei Xu<sup>1,2*</sup> · Xiaowen Xu<sup>2*</sup> · Haiwen Hong<sup>2*†</sup> · Zixuan Ni<sup>1</sup> · Hongxing Li<sup>1,2</sup> · Yiwen Qiu<sup>1</sup> · Weiming Lu<sup>1‡</sup> · Yongliang Shen<sup>1</sup>**
+**Haolei Xu<sup>1,2*</sup> · Xiaowen Xu<sup>2*</sup> · Haiwen Hong<sup>2*†</sup> · Zixuan Ni<sup>1</sup>**<br>
+**Hongxing Li<sup>1,2</sup> · Yiwen Qiu<sup>1</sup> · Weiming Lu<sup>1‡</sup> · Yongliang Shen<sup>1</sup>**
 
 <sup>1</sup>Zhejiang University &nbsp; <sup>2</sup>Yuvion Team, Alibaba Group
 

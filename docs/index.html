@@ -126,6 +126,8 @@
                 <div class="author-name">
                     <a href="#"><strong>Zixuan Ni</strong></a><sup>1</sup>
                 </div>
+            </div>
+            <div class="col-12">
                 <div class="author-name">
                     <a href="#"><strong>Hongxing Li</strong></a><sup>1,2</sup>
                 </div>
@@ -239,6 +241,16 @@
             <p class="card-text">
                 Relay-OPD runs like a relay race. The student generates on-policy as usual; at every position, a <strong>handoff criterion</strong> checks whether the teacher's top-1 token is a reflection token while no reflection token appears in the student's top-K &mdash; the signature of a failed prefix the student would not fix on its own. When the trigger fires, the baton passes to the teacher: a short <strong>teacher leg</strong> of L paragraphs redirects the reasoning, after which the baton returns to the student. A relay budget of M teacher legs concentrates intervention on critical early positions, and the rollout terminates when the M-th teacher leg ends, keeping relay trajectories short. The student is then optimized on the relayed trajectory with token-level advantages, including on the relay tokens themselves, so it internalizes <em>when</em> and <em>how</em> to reflect.
             </p>
+
+            <div class="text-center mt-3">
+                <figure class="figure">
+                    <img src="./assets/method.png" class="img-thumbnail figure-img img-fluid rounded"
+                         alt="Overview of Relay-OPD">
+                    <figcaption class="figure-caption text-start">
+                        <strong>Overview of Relay-OPD.</strong> Unlike standard OPD (top), which trains on student-only trajectories that continue misdirected after prefix failure, Relay-OPD constructs relay trajectories (middle): when the handoff trigger (bottom) detects that the teacher would redirect the reasoning while the student would not, the teacher briefly takes over before the student resumes. The entire rollout runs in a single speculative decoding engine (right).
+                    </figcaption>
+                </figure>
+            </div>
 
             <h4 class="mt-4">Key Components</h4>
             <ul>
@@ -495,7 +507,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title card-title-margin">Acknowledgements</h4>
-            <p class="card-text">We acknowledge the webpage template from <a href="https://ximinng.github.io/">Ximing Xing</a>, as used by <a href="https://zju-real.github.io/GUI-G2/">GUI-G&sup2;</a>.</p>
+            <p class="card-text">We acknowledge the webpage template from <a href="https://ximinng.github.io/">Ximing Xing</a>.</p>
         </div>
     </div>
     <br>
