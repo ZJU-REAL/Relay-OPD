@@ -1,0 +1,3 @@
+# vLLM 0.21 requires OpenCV >=4.13, while verl requires NumPy <2. OpenCV 4.13
+# is runtime-compatible with NumPy 1.26 despite its conservative NumPy metadata.
+opencv-python-headless>=4.13.0.92,<5.0.0
